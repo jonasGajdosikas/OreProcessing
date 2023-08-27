@@ -1,0 +1,3 @@
+displayName = Ore Processing Mod
+author = 20jonas02
+version = 0.1
