@@ -12,7 +12,6 @@ namespace OreProcessing
         public override void Load()
         {
             SlagTex = Assets.Request<Texture2D>("Content/Slags/Slag");
-            Content.Slags.SlagSystem.LoadSlags(this);
         }
     }
 }

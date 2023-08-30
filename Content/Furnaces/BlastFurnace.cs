@@ -8,8 +8,8 @@ using Terraria.ObjectData;
 
 namespace OreProcessing.Content.Furnaces
 {
-	public class BlastFurnace : ModTile
-	{
+    public class BlastFurnace : ModTile
+    {
         public override void SetStaticDefaults()
         {
             Main.tileFrameImportant[Type] = true;
@@ -70,7 +70,7 @@ namespace OreProcessing.Content.Furnaces
         }
         public static void GiveSlag(Recipe recipe, Item item, List<Item> consumedItems, Item destinationStack)
         {
-            Main.LocalPlayer.QuickSpawnItem(Main.LocalPlayer.GetSource_FromThis(), Slags.SlagSystem.slagIDs[0]);
+            Main.LocalPlayer.QuickSpawnItem(Main.LocalPlayer.GetSource_FromThis(), Slags.SlagItem.GetSlagTier(0).Type);
         }
     }
 }

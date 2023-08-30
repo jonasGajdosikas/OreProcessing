@@ -7,19 +7,53 @@ using Terraria.ModLoader;
 
 namespace OreProcessing.Content.Slags
 {
-    [Autoload(false)]
     public class SlagItem : ModItem
     {
+        /*
+         * 1.4.4.8 code for dynamically loading from
+         * https://github.com/tModLoader/tModLoader/blob/1.4.4/ExampleMod/Content/Items/Placeable/ExampleTrap.cs
+         * **/
+        public struct SlagData
+        {
+            public Color tint;
+            public string name;
+            public List<int> oreDrops;
+            public List<int> miscDrops;
+            public float cointMult;
+        }
+        public class SlagItemLoader : ILoadable
+        {
+            internal static SlagData[] slagDatas = new SlagData[]
+            {
+                new SlagData{tint = Color.White, name = "Slag", oreDrops = Utils.Ores_phm, miscDrops = Utils.Gems, cointMult = 1f},
+                new SlagData{tint = Color.RosyBrown, name = "RichSlag", oreDrops = Utils.Ores_phm.WithEntries(Utils.Ores_evil), miscDrops = Utils.Gems, cointMult = 1.2f},
+                new SlagData{tint = Color.Goldenrod, name = "InfusedSlag", oreDrops = Utils.Ores_hm, miscDrops = Utils.Gems.WithEntries(Utils.Souls), cointMult = 1.5f}
+            };
+            public void Load(Mod mod)
+            {
+                foreach (SlagData data in slagDatas)
+                {
+                    SlagItem slagItem = new(data);
+                    mod.AddContent(slagItem);
+                }
+            }
+
+            public void Unload()
+            {
+            }
+        }
         public SlagItem(SlagData data)
         {
             this.data = data;
         }
-        public SlagItem()
+        public static SlagItem GetSlagTier(int tier)
         {
-
+            if (tier < 0 || tier >= SlagItemLoader.slagDatas.Length) { throw new System.Exception("Invalid style"); }
+            return new SlagItem(SlagItemLoader.slagDatas[tier]);
         }
-        public void SetData(SlagData data) => this.data = data;
-        SlagData data;
+        internal SlagData data;
+        protected override bool CloneNewInstances => true;
+
         public override string Texture => "OreProcessing/Content/Slags/Slag";
         public override string Name => data.name;
         public override void SetStaticDefaults()
@@ -63,34 +97,6 @@ namespace OreProcessing.Content.Slags
             {
                 resultStack /= 100;
                 resultType = ItemID.SilverCoin;
-            }
-        }
-    }
-    public struct SlagData
-    {
-        public Color tint;
-        public string name;
-        public List<int> oreDrops;
-        public List<int> miscDrops;
-        public float cointMult;
-    }
-    public class SlagSystem : ModSystem
-    {
-        internal static SlagData[] slagDatas = new SlagData[]
-        {
-            new SlagData{tint = Color.White, name = "Slag", oreDrops = Utils.Ores_phm, miscDrops = Utils.Gems, cointMult = 1f},
-            new SlagData{tint = Color.RosyBrown, name = "RichSlag", oreDrops = Utils.Ores_phm.WithEntries(Utils.Ores_evil), miscDrops = Utils.Gems, cointMult = 1.2f},
-            new SlagData{tint = Color.Goldenrod, name = "InfusedSlag", oreDrops = Utils.Ores_hm, miscDrops = Utils.Gems.WithEntries(Utils.Souls), cointMult = 1.5f}
-        };
-        public static List<int> slagIDs = new();
-        public static void LoadSlags(OreProcessing mod)
-        {
-            foreach (SlagData data in slagDatas)
-            {
-                SlagItem slagItem = new();
-                slagItem.SetData(data);
-                mod.AddContent(slagItem);
-                slagIDs.Add(slagItem.Item.type);
             }
         }
     }
