@@ -1,1 +1,21 @@
-# This file will automatically update with entries for new content after a build and reload
+Items: {
+	BlastFurnaceItem: {
+		Tooltip: ""
+		DisplayName: Blast Furnace
+	}
+
+	Slag: {
+		DisplayName: Slag
+		Tooltip: ""
+	}
+
+	RichSlag: {
+		DisplayName: Rich Slag
+		Tooltip: ""
+	}
+
+	InfusedSlag: {
+		DisplayName: Infused Slag
+		Tooltip: ""
+	}
+}
