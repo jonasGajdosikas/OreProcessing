@@ -8,10 +8,11 @@ namespace OreProcessing
 {
 	public class OreProcessing : Mod
     {
-        public static Asset<Texture2D> SlagTex;
+        private static Asset<Texture2D> slagTex;
+        public static Asset<Texture2D> SlagTex => slagTex;
         public override void Load()
         {
-            SlagTex = Assets.Request<Texture2D>("Content/Slags/Slag");
+            slagTex = Assets.Request<Texture2D>("Content/Slags/Slag");
         }
     }
 }

@@ -51,9 +51,9 @@ namespace OreProcessing.Content.Slags
             if (tier < 0 || tier >= SlagItemLoader.slagDatas.Length) { throw new System.Exception("Invalid style"); }
             return new SlagItem(SlagItemLoader.slagDatas[tier]);
         }
+        public static int GetSlagTierID(int tier) => ModContent.GetInstance<OreProcessing>().Find<ModItem>(GetSlagTier(tier).Name).Type;
         internal SlagData data;
         protected override bool CloneNewInstances => true;
-
         public override string Texture => "OreProcessing/Content/Slags/Slag";
         public override string Name => data.name;
         public override void SetStaticDefaults()
