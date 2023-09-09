@@ -20,7 +20,7 @@ namespace OreProcessing.Content.Furnaces
 
             AdjTiles = new int[] { TileID.Hellforge, TileID.Furnaces };
 
-            AddMapEntry(new Color(54, 49, 47));
+            AddMapEntry(new Color(238, 85, 70), ModContent.GetInstance<BlastingHellforgeItem>().DisplayName);
             AnimationFrameHeight = 72;
         }
         public override void AnimateTile(ref int frame, ref int frameCounter)

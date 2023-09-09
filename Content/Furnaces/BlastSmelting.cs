@@ -31,7 +31,7 @@ namespace OreProcessing.Content.Furnaces
             if (recipe.requiredTile.Contains(TileID.Furnaces)) return 1;
             if (recipe.requiredTile.Contains(TileID.Hellforge)) return 2;
             if (recipe.requiredTile.Contains(TileID.AdamantiteForge)) return 3;
-            if (recipe.requiredTile.Contains(TileID.LunarCraftingStation)) return 4;
+            //if (recipe.requiredTile.Contains(TileID.LunarCraftingStation)) return 4;
             return 0;
         }
         static int Consumed = 0;
@@ -50,10 +50,10 @@ namespace OreProcessing.Content.Furnaces
         public static void BlastSlag(Recipe recipe, Item item, List<Item> consumedItems, Item destinationStack)
         {
             int tier = Main.LocalPlayer.GetModPlayer<BlastPlayer>().BlastTier;
-            int tDiff = tier - RecipeBarTier(recipe);
-            if (tDiff < 0) return;
+            int tRecipe = RecipeBarTier(recipe);
+            if (tRecipe > tier) return;
             if (Consumed < 10) return;
-            if (Main.rand.NextBool(Consumed / 10 + tDiff)) return;
+            if (Main.rand.NextBool(Consumed / (10 + tRecipe - tier))) return;
             Main.LocalPlayer.QuickSpawnItem(Main.LocalPlayer.GetSource_FromThis(), Slags.SlagItem.GetSlagTierID(tier - 1));
             Consumed -= 10;
         }
@@ -64,6 +64,7 @@ namespace OreProcessing.Content.Furnaces
         {
             get
             {
+                if (Player.adjTile[ModContent.TileType<BlastingHMForge>()]) return 3;
                 if (Player.adjTile[ModContent.TileType<BlastingHellforge>()]) return 2;
                 if (Player.adjTile[ModContent.TileType<BlastFurnace>()]) return 1;
                 return 0;

@@ -15,12 +15,13 @@ namespace OreProcessing.Content.Furnaces
             Main.tileFrameImportant[Type] = true;
             TileObjectData.newTile.CopyFrom(TileObjectData.Style3x4);
             TileObjectData.newTile.Origin = new Point16(1, 2);
+            TileObjectData.newTile.CoordinateHeights = new int[] { 16, 16, 16, 18 };
             TileObjectData.addTile(Type);
 
             AdjTiles = new int[] { TileID.Furnaces };
 
-            AddMapEntry(new Color(54, 49, 47));
-            AnimationFrameHeight = 72;
+            AddMapEntry(new Color(144, 148, 144), ModContent.GetInstance<BlastFurnaceItem>().DisplayName);
+            AnimationFrameHeight = 74;
         }
         public override void AnimateTile(ref int frame, ref int frameCounter)
         {

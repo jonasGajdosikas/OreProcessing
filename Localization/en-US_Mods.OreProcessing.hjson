@@ -27,7 +27,25 @@ Items: {
 		DisplayName: Blasting Hellforge
 		Tooltip:
 			'''
-			25% chance to not consume items
+			up to 25% chance to not consume items
+			May give off slag
+			'''
+	}
+
+	BlastingAdamantiteForgeItem: {
+		DisplayName: Blasting Adamantite Forge Item
+		Tooltip:
+			'''
+			up to 30% chance to not consume items
+			May give off slag
+			'''
+	}
+
+	BlastingTitaniumForgeItem: {
+		DisplayName: Blasting Titanium Forge Item
+		Tooltip:
+			'''
+			up to 30% chance to not consume items
 			May give off slag
 			'''
 	}
