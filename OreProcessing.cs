@@ -14,5 +14,6 @@ namespace OreProcessing
         {
             slagTex = Assets.Request<Texture2D>("Content/Slags/Slag");
         }
+        
     }
 }

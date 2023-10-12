@@ -25,9 +25,23 @@ namespace OreProcessing.Content.Slags
         {
             internal static SlagData[] slagDatas = new SlagData[]
             {
-                new SlagData{tint = Color.White, name = "Slag", oreDrops = Utils.Ores_phm, miscDrops = Utils.Gems, cointMult = 1f},
-                new SlagData{tint = Color.RosyBrown, name = "RichSlag", oreDrops = Utils.Ores_phm.WithEntries(Utils.Ores_evil), miscDrops = Utils.Gems, cointMult = 1.2f},
-                new SlagData{tint = Color.Goldenrod, name = "InfusedSlag", oreDrops = Utils.Ores_hm, miscDrops = Utils.Gems.WithEntries(Utils.Souls), cointMult = 1.5f}
+                new SlagData{tint = Color.White, name = "Slag", 
+                    oreDrops = Utils.Ores_phm, 
+                    miscDrops = Utils.Gems, 
+                    cointMult = 1f},
+                new SlagData{tint = Color.RosyBrown, name = "RichSlag", 
+                    oreDrops = Utils.Ores_phm.WithEntries(Utils.Ores_evil), 
+                    miscDrops = Utils.Gems, 
+                    cointMult = 1.2f},
+                new SlagData{tint = Color.Goldenrod, name = "InfusedSlag", 
+                    oreDrops = Utils.Ores_hm, 
+                    miscDrops = Utils.Gems.WithEntries(Utils.Souls), 
+                    cointMult = 1.5f},
+                new SlagData{tint = Color.LightCyan, name = "LunarSlag", 
+                    oreDrops = new List<int> { ItemID.LunarOre, ItemID.ChlorophyteOre, ItemID.ChlorophyteOre }, 
+                    miscDrops = new List<int> { ItemID.FragmentVortex, ItemID.FragmentNebula, ItemID.FragmentSolar, ItemID.FragmentStardust },
+                    cointMult = 2f
+                }
             };
             public void Load(Mod mod)
             {

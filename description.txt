@@ -1,1 +1,5 @@
-Ore Processing Mod is a pretty cool mod, it does...this. Modify this file with a description of your mod.
+Ore Processing Mod is a mod inspired by Minecraft tech mods;
+Craft improved smelting stations that have a chance to not consume ore and give slag to be reprocessed
+
+0.2:
+	added a station for post moonlord ores, the shimmer extractinator

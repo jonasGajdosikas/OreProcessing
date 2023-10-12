@@ -3,7 +3,7 @@ Items: {
 		DisplayName: Blast Furnace
 		Tooltip:
 			'''
-			20% chance to not consume items
+			20% chance to not consume ore
 			May give off slag
 			'''
 	}
@@ -27,7 +27,7 @@ Items: {
 		DisplayName: Blasting Hellforge
 		Tooltip:
 			'''
-			up to 25% chance to not consume items
+			up to 25% chance to not consume ore
 			May give off slag
 			'''
 	}
@@ -36,7 +36,7 @@ Items: {
 		DisplayName: Blasting Adamantite Forge Item
 		Tooltip:
 			'''
-			up to 30% chance to not consume items
+			up to 30% chance to not consume ore
 			May give off slag
 			'''
 	}
@@ -45,8 +45,33 @@ Items: {
 		DisplayName: Blasting Titanium Forge Item
 		Tooltip:
 			'''
-			up to 30% chance to not consume items
+			up to 30% chance to not consume ore
 			May give off slag
 			'''
+	}
+
+	ShimmeringExtractinatorItem: {
+		DisplayName: Shimmering Extractinator
+		Tooltip:
+			'''
+			Reduces ore consumption
+			May give off slag
+			'''
+	}
+
+	LunarSlag: {
+		DisplayName: Lunar Slag
+		Tooltip: If only there was a way to extractinate the impurities within
+	}
+}
+
+Configs: {
+	ExtractConfig: {
+		DisplayName: Extract Config
+
+		ExtractItemAmount: {
+			Label: Extract Item Amount
+			Tooltip: How many items are extracted at once
+		}
 	}
 }
