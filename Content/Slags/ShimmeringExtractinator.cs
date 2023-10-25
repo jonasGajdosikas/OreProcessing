@@ -53,140 +53,106 @@ namespace OreProcessing.Content.Slags {
     }
     public class ShimmeringExtraction : GlobalItem {
         public override void ExtractinatorUse(int extractType, int extractinatorBlockType, ref int resultType, ref int resultStack) {
-            int num = 5000;
-            int num2 = 25;
-            int num3 = 50;
-            int num4 = -1;
-            int num5 = -1;
-            int num6 = -1;
-            int num7 = 1;
+            int amberMosquitoOdds = 5000;
+            int gemOdds = 25;
+            int amberOdds = 50;
+            if (extractType == ItemID.Sets.ExtractinatorMode[ItemID.DesertFossil]) extractType = 1;
             switch (extractType) {
-                case 1:
-                    num /= 3;
-                    num2 *= 2;
-                    num3 = 20;
-                    num4 = 10;
+                case 0: // silt/slush
                     break;
-                case 2:
-                    num = -1;
-                    num2 = -1;
-                    num5 = 1;
-                    num7 = -1;
+                case 1: //desert fossil
+                    amberMosquitoOdds /= 3;
+                    gemOdds *= 2;
+                    amberOdds = 20;
+                    if (NextBool(10)) {
+                        resultType = ItemID.FossilOre;
+                        resultStack = 1;
+                        if (NextBool(5))
+                            resultStack += NextHighBound(2);
+                        if (NextBool(10))
+                            resultStack += NextHighBound(3);
+                        if (NextBool(15))
+                            resultStack += NextHighBound(4);
+                        return;
+                    }
                     break;
-                case 3:
-                    num = -1;
-                    num2 = -1;
-                    num5 = -1;
-                    num7 = -1;
-                    num6 = 1;
-                    break;
+                case 2: //moss
+                    resultType = NextHighBound(4) switch {
+                        0 => 2674,
+                        1 => 2006,
+                        2 => 2675,
+                        _ => 2002
+                    };
+                    resultStack = 1;
+                    return;
+                case 3: //fishing junk
+                    resultType = (extractinatorBlockType == TileID.ChlorophyteExtractinator && NextBool(10)) ?
+                        NextHighBound(5) switch {
+                            0 => 4354,
+                            1 => 4389,
+                            2 => 4377,
+                            3 => 5127,
+                            _ => 4378,
+                        } : 
+                        NextHighBound(5) switch {
+                             0 => 4349,
+                             1 => 4350,
+                             2 => 4351,
+                             3 => 4352,
+                             _ => 4353,
+                        };
+                    resultStack = 1;
+                    return;
                 default:
                     base.ExtractinatorUse(extractType, extractinatorBlockType, ref resultType, ref resultStack);
                     return;
             }
 
+            
             static bool NextBool(int E) => Main.rand.NextBool(E);
             static int Next(int MinVal, int MaxVal) => Main.rand.Next(MinVal, MaxVal);
             static int NextHighBound(int MaxVal) => Main.rand.Next(MaxVal);
 
             int type;
             int stack = 1;
-            if (num4 != -1 && NextBool(num4)) {
-                type = 3380;
-                if (NextBool(5))
-                    stack += NextHighBound(2);
+            if (NextBool(amberMosquitoOdds)) {
+                resultType = ItemID.AmberMosquito;
+                resultStack = 1;
+                return;
+            }
+            
+            static int IncrementStack(int stack, int times, int odds, int lowNum, int highNum) {
+                for (int i = 0; i < times; i++)
+                    if (NextBool(odds))
+                        stack += Next(lowNum, highNum);
+                return stack;
+            }
+            static int IncrementStackIncrementally(int stack) {
+                for (int i = 2; i <= 6; i++)
+                    if (NextBool(i * 10))
+                        stack += Next(0, i);
+                return stack;
+            }
 
-                if (NextBool(10))
-                    stack += NextHighBound(3);
-
-                if (NextBool(15))
-                    stack += NextHighBound(4);
-            } else if (num7 != -1 && NextBool(2)) {
+            if (NextBool(2)) {
                 if (NextBool(12000)) {
-                    type = 74;
-                    if (NextBool(14))
-                        stack += Next(0, 2);
-
-                    if (NextBool(14))
-                        stack += Next(0, 2);
-
-                    if (NextBool(14))
-                        stack += Next(0, 2);
+                    type = ItemID.PlatinumCoin;
+                    resultStack = IncrementStack(stack, 3, 14, 0, 2);
                 } else if (NextBool(800)) {
-                    type = 73;
-                    if (NextBool(6))
-                        stack += Next(1, 21);
-
-                    if (NextBool(6))
-                        stack += Next(1, 21);
-
-                    if (NextBool(6))
-                        stack += Next(1, 21);
-
-                    if (NextBool(6))
-                        stack += Next(1, 21);
-
-                    if (NextBool(6))
-                        stack += Next(1, 20);
+                    type = ItemID.GoldCoin;
+                    resultStack = IncrementStack(stack, 5, 6, 1, 21);
                 } else if (NextBool(60)) {
-                    type = 72;
-                    if (NextBool(4))
-                        stack += Next(5, 26);
-
-                    if (NextBool(4))
-                        stack += Next(5, 26);
-
-                    if (NextBool(4))
-                        stack += Next(5, 26);
-
-                    if (NextBool(4))
-                        stack += Next(5, 25);
+                    type = ItemID.SilverCoin;
+                    resultStack = IncrementStack(stack, 4, 4, 5, 26);
                 } else {
-                    type = 71;
-                    if (NextBool(3))
-                        stack += Next(10, 26);
-
-                    if (NextBool(3))
-                        stack += Next(10, 26);
-
-                    if (NextBool(3))
-                        stack += Next(10, 26);
-
-                    if (NextBool(3))
-                        stack += Next(10, 25);
+                    type = ItemID.CopperCoin;
+                    resultStack = IncrementStack(stack, 4, 3, 10, 26);
                 }
-            } else if (num != -1 && NextBool(num)) {
-                type = 1242;
-            } else if (num5 != -1) {
-                type = ((!NextBool(4)) ? 2674 : ((!NextBool(3)) ? 2006 : ((NextBool(3)) ? 2675 : 2002)));
-            } else if (num6 != -1 && extractinatorBlockType == 642) {
-                if (NextBool(10)) {
-                    type = NextHighBound(5) switch {
-                        0 => 4354,
-                        1 => 4389,
-                        2 => 4377,
-                        3 => 5127,
-                        _ => 4378,
-                    };
-                } else {
-                    type = NextHighBound(5) switch {
-                        0 => 4349,
-                        1 => 4350,
-                        2 => 4351,
-                        3 => 4352,
-                        _ => 4353,
-                    };
-                }
-            } else if (num6 != -1) {
-                type = NextHighBound(5) switch {
-                    0 => 4349,
-                    1 => 4350,
-                    2 => 4351,
-                    3 => 4352,
-                    _ => 4353,
-                };
-            } else if (num2 != -1 && NextBool(num2)) {
-                type = NextHighBound(6) switch {
+                resultType = type;
+                return;
+            } 
+            if (NextBool(gemOdds)) {
+                resultType = NextHighBound(6) switch {
                     0 => 181,
                     1 => 180,
                     2 => 177,
@@ -194,98 +160,39 @@ namespace OreProcessing.Content.Slags {
                     4 => 178,
                     _ => 182,
                 };
-                if (NextBool(20))
-                    stack += Next(0, 2);
-
-                if (NextBool(30))
-                    stack += Next(0, 3);
-
-                if (NextBool(40))
-                    stack += Next(0, 4);
-
-                if (NextBool(50))
-                    stack += Next(0, 5);
-
-                if (NextBool(60))
-                    stack += Next(0, 6);
-            } else if (num3 != -1 && NextBool(num3)) {
-                type = 999;
-                if (NextBool(20))
-                    stack += Next(0, 2);
-
-                if (NextBool(30))
-                    stack += Next(0, 3);
-
-                if (NextBool(40))
-                    stack += Next(0, 4);
-
-                if (NextBool(50))
-                    stack += Next(0, 5);
-
-                if (NextBool(60))
-                    stack += Next(0, 6);
-            } else if (NextBool(3)) {
+                resultStack = IncrementStackIncrementally(stack);
+                resultStack = stack;
+                return;
+            } 
+            if (NextBool(amberOdds)) {
+                resultType = ItemID.Amber;
+                resultStack = IncrementStackIncrementally(stack);
+                return;
+            } 
+            if (NextBool(3)) {
                 if (NextBool(5000)) {
-                    type = 74;
-                    if (NextBool(10))
-                        stack += Next(0, 3);
+                    resultType = ItemID.PlatinumCoin;
+                    resultStack = IncrementStack(stack, 3, 10, 0, 3);
+                    return;
 
-                    if (NextBool(10))
-                        stack += Next(0, 3);
-
-                    if (NextBool(10))
-                        stack += Next(0, 3);
-
-                    if (NextBool(10))
-                        stack += Next(0, 3);
-
-                    if (NextBool(10))
-                        stack += Next(0, 3);
-                } else if (NextBool(400)) {
-                    type = 73;
-                    if (NextBool(5))
-                        stack += Next(1, 21);
-
-                    if (NextBool(5))
-                        stack += Next(1, 21);
-
-                    if (NextBool(5))
-                        stack += Next(1, 21);
-
-                    if (NextBool(5))
-                        stack += Next(1, 21);
-
-                    if (NextBool(5))
-                        stack += Next(1, 20);
-                } else if (NextBool(30)) {
-                    type = 72;
-                    if (NextBool(3))
-                        stack += Next(5, 26);
-
-                    if (NextBool(3))
-                        stack += Next(5, 26);
-
-                    if (NextBool(3))
-                        stack += Next(5, 26);
-
-                    if (NextBool(3))
-                        stack += Next(5, 25);
-                } else {
-                    type = 71;
-                    if (NextBool(2))
-                        stack += Next(10, 26);
-
-                    if (NextBool(2))
-                        stack += Next(10, 26);
-
-                    if (NextBool(2))
-                        stack += Next(10, 26);
-
-                    if (NextBool(2))
-                        stack += Next(10, 25);
                 }
-            } else if (extractinatorBlockType == 642) {
-                type = NextHighBound(14) switch {
+                if (NextBool(400)) {
+                    resultType = ItemID.GoldCoin;
+                    resultStack = IncrementStack(stack, 5, 5, 1, 21);
+                    return;
+                }
+                if (NextBool(30)) {
+                    resultType = ItemID.SilverCoin;
+                    resultStack = IncrementStack(stack, 4, 3, 5, 26);
+                    return;
+                }
+                resultType = ItemID.CopperCoin;
+                resultStack = IncrementStack(stack, 4, 2, 10, 26);
+                return;
+
+            } 
+            if (extractinatorBlockType == 642) {
+                resultType = NextHighBound(14) switch {
                     0 => 12,
                     1 => 11,
                     2 => 14,
@@ -300,53 +207,22 @@ namespace OreProcessing.Content.Slags {
                     11 => 1105,
                     12 => 366,
                     _ => 1106,
-                };
-                if (NextBool(20))
-                    stack += Next(0, 2);
-
-                if (NextBool(30))
-                    stack += Next(0, 3);
-
-                if (NextBool(40))
-                    stack += Next(0, 4);
-
-                if (NextBool(50))
-                    stack += Next(0, 5);
-
-                if (NextBool(60))
-                    stack += Next(0, 6);
-            } else {
-                type = NextHighBound(8) switch {
-                    0 => 12,
-                    1 => 11,
-                    2 => 14,
-                    3 => 13,
-                    4 => 699,
-                    5 => 700,
-                    6 => 701,
-                    _ => 702,
-                };
-                if (NextBool(20))
-                    stack += Next(0, 2);
-
-                if (NextBool(30))
-                    stack += Next(0, 3);
-
-                if (NextBool(40))
-                    stack += Next(0, 4);
-
-                if (NextBool(50))
-                    stack += Next(0, 5);
-
-                if (NextBool(60))
-                    stack += Next(0, 6);
-            }
-
-            if (type > 0) {
-                resultType = type;
-                resultStack = stack;
-            }
-            
+                }; 
+                resultStack = IncrementStackIncrementally(stack);
+                return;
+            } 
+            resultType = NextHighBound(8) switch {
+                0 => 12,
+                1 => 11,
+                2 => 14,
+                3 => 13,
+                4 => 699,
+                5 => 700,
+                6 => 701,
+                _ => 702,
+            };
+            resultStack = IncrementStackIncrementally(stack);
+            return;
         }
         public override void Load() {
             On_Player.PlaceThing_ItemInExtractinator += ShimmerExtractinator;
@@ -356,11 +232,13 @@ namespace OreProcessing.Content.Slags {
         }
         private static void ShimmerExtractinator(On_Player.orig_PlaceThing_ItemInExtractinator orig, Player self, ref Player.ItemCheckContext context) {
             Tile tile = Main.tile[Player.tileTargetX, Player.tileTargetY];
-            if (tile.TileType == ModContent.TileType<ShimmeringExtractinator>()) {
+            if (tile.TileType != ModContent.TileType<ShimmeringExtractinator>()) {
+                orig.Invoke(self, ref context);
+            } else {
                 float itemTime = .16f;
                 int ExtractTileID = ModContent.TileType<ShimmeringExtractinator>();
                 if (!self.adjTile[ExtractTileID] || !self.ItemTimeIsZero || self.itemAnimation <= 0 || !self.controlUseItem)
-                return;
+                    return;
                 Item item = self.inventory[self.selectedItem];
 
                 void DropItemFromExtractinator(int itemType, int itemStack) {
@@ -385,10 +263,10 @@ namespace OreProcessing.Content.Slags {
                 } else if (extractType >= 0) {
                     SoundEngine.PlaySound(SoundID.Grab);
                     self.ApplyItemTime(item, itemTime);
-                    
+
                     int num = ModContent.GetInstance<ExtractConfig>().ExtractItemAmount;
-                    if (item.stack >= num) {
-                        for (int i = 0; i < num; i++) {
+                    if (item.stack > num) {
+                        for (int i = 1; i < num; i++) {
                             Extractinate(extractType);
                             item.stack--;
                             if (item.stack <= 0) {
@@ -396,24 +274,17 @@ namespace OreProcessing.Content.Slags {
                                 break;
                             }
                         }
-                    } else {
-                        Extractinate(extractType);
                     }
+                    Extractinate(extractType);
                     void Extractinate(int extractType) {
                         int resultType = ItemID.SiltBlock, resultStack = 1;
                         ItemLoader.ExtractinatorUse(ref resultType, ref resultStack, extractType, TileID.Extractinator);
-                        Main.NewText($"Item: {resultType}, stack: {resultStack}");
+                        //Main.NewText($"Item: {resultType}, stack: {resultStack}");
                         DropItemFromExtractinator(resultType, resultStack);
                     }
                 }
-            } else {
-                orig.Invoke(self, ref context);
             }
-
         }
-    }
-    public class ExtractingPlayer : ModPlayer {
-
     }
     public class ExtractConfig : ModConfig {
         public override ConfigScope Mode => ConfigScope.ServerSide;

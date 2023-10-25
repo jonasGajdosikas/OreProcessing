@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace OreProcessing.Content.Furnaces
@@ -11,6 +12,13 @@ namespace OreProcessing.Content.Furnaces
     {
         public override void PostAddRecipes()
         {
+            /**for (int i = TileID.Count; i < TileLoader.TileCount; i++) {
+                ModTile tile = TileLoader.GetTile(i);
+                if (true) BarTileIDs.Add(tile.Type);
+                bool TileIsBars(Tile tile) {
+                    TileID.Sets.
+                }
+            }/**/
             for (int i = 0; i < Recipe.numRecipes; i++)
             {
                 Recipe recipe = Main.recipe[i];
@@ -21,13 +29,16 @@ namespace OreProcessing.Content.Furnaces
                 }
             }
         }
-
+        // TODO: fix bar detection
+        //static readonly List<int> BarTileIDs = new() { TileID.MetalBars };
         static bool RecipeIsBars(Recipe recipe)
         {
-            bool createsBars = recipe.createItem.createTile == TileID.MetalBars;
-            bool fromOre = recipe.requiredItem.TrueForAll(item => item.createTile != TileID.MetalBars);
+            if (recipe.createItem.createTile == -1) return false;
+            bool flag = Main.tileFrameImportant[recipe.createItem.createTile];
+            bool fromOre = recipe.requiredItem.Any(item => item.createTile != -1 && TileID.Sets.Ore[item.createTile]);
+            bool notFromWalls = recipe.requiredItem.TrueForAll(item => item.createWall == -1);
 
-            return createsBars && fromOre;
+            return flag && fromOre && notFromWalls;
         }
         static int RecipeBarTier(Recipe recipe)
         {
@@ -58,7 +69,7 @@ namespace OreProcessing.Content.Furnaces
             if (tRecipe > tier) return;
             if (Consumed < 10) return;
             if (Main.rand.NextBool(Consumed / (10 + tRecipe - tier))) return;
-            Main.LocalPlayer.QuickSpawnItem(Main.LocalPlayer.GetSource_FromThis(), SlagItem.GetSlagTierID(tier - 1));
+            Main.LocalPlayer.QuickSpawnItem(Main.LocalPlayer.GetSource_FromThis(), SlagItem.GetSlagTierID(tRecipe - 1));
             Consumed -= 10;
         }
     }
