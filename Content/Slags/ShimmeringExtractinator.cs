@@ -368,9 +368,9 @@ namespace OreProcessing.Content.Slags {
                     if (Main.SmartCursorIsUsed || PlayerInput.UsingGamepad)
                         vector = self.Center;
 
-                    int number = Item.NewItem(self.GetSource_TileInteraction(Player.tileTargetX, Player.tileTargetY), (int)vector.X, (int)vector.Y, 1, 1, itemType, itemStack, noBroadcast: false, -1);
+                    int num = Item.NewItem(self.GetSource_TileInteraction(Player.tileTargetX, Player.tileTargetY), (int)vector.X, (int)vector.Y, 1, 1, itemType, itemStack, noBroadcast: false, -1);
                     if (Main.netMode == NetmodeID.MultiplayerClient)
-                        NetMessage.SendData(MessageID.SyncItem, -1, -1, null, number, 1f);
+                        NetMessage.SendData(MessageID.SyncItem, number: num, number2: 1f);
                 }
 
                 int extractType = ItemID.Sets.ExtractinatorMode[item.type];
