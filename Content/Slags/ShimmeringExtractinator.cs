@@ -1,8 +1,4 @@
-﻿using Microsoft.CodeAnalysis.Options;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
-using OreProcessing.Content.Furnaces;
-using System;
+﻿using Microsoft.Xna.Framework;
 using System.ComponentModel;
 using Terraria;
 using Terraria.Audio;
@@ -13,8 +9,9 @@ using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
 using Terraria.ObjectData;
 
-namespace OreProcessing.Content.Slags {
-	public class ShimmeringExtractinator : ModTile
+namespace OreProcessing.Content.Slags
+{
+    public class ShimmeringExtractinator : ModTile
 	{
         public override void SetStaticDefaults() {
             Main.tileFrameImportant[Type] = true;
