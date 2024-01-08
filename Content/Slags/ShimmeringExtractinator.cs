@@ -1,8 +1,4 @@
-﻿using Microsoft.CodeAnalysis.Options;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
-using OreProcessing.Content.Furnaces;
-using System;
+﻿using Microsoft.Xna.Framework;
 using System.ComponentModel;
 using Terraria;
 using Terraria.Audio;
@@ -13,8 +9,9 @@ using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
 using Terraria.ObjectData;
 
-namespace OreProcessing.Content.Slags {
-	public class ShimmeringExtractinator : ModTile
+namespace OreProcessing.Content.Slags
+{
+    public class ShimmeringExtractinator : ModTile
 	{
         public override void SetStaticDefaults() {
             Main.tileFrameImportant[Type] = true;
@@ -246,9 +243,9 @@ namespace OreProcessing.Content.Slags {
                     if (Main.SmartCursorIsUsed || PlayerInput.UsingGamepad)
                         vector = self.Center;
 
-                    int number = Item.NewItem(self.GetSource_TileInteraction(Player.tileTargetX, Player.tileTargetY), (int)vector.X, (int)vector.Y, 1, 1, itemType, itemStack, noBroadcast: false, -1);
+                    int num = Item.NewItem(self.GetSource_TileInteraction(Player.tileTargetX, Player.tileTargetY), (int)vector.X, (int)vector.Y, 1, 1, itemType, itemStack, noBroadcast: false, -1);
                     if (Main.netMode == NetmodeID.MultiplayerClient)
-                        NetMessage.SendData(MessageID.SyncItem, -1, -1, null, number, 1f);
+                        NetMessage.SendData(MessageID.SyncItem, number: num, number2: 1f);
                 }
 
                 int extractType = ItemID.Sets.ExtractinatorMode[item.type];
