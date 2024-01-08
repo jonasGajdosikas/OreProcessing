@@ -278,7 +278,7 @@ namespace OreProcessing.Content.Slags {
                     Extractinate(extractType);
                     void Extractinate(int extractType) {
                         int resultType = ItemID.SiltBlock, resultStack = 1;
-                        ItemLoader.ExtractinatorUse(ref resultType, ref resultStack, extractType, TileID.Extractinator);
+                        ItemLoader.ExtractinatorUse(ref resultType, ref resultStack, extractType, TileID.ChlorophyteExtractinator);
                         //Main.NewText($"Item: {resultType}, stack: {resultStack}");
                         DropItemFromExtractinator(resultType, resultStack);
                     }
