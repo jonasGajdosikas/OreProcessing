@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -19,16 +20,23 @@ namespace OreProcessing.Content.Fortune
             NaturalTile.LoadWorldData(tag);
             base.LoadWorldData(tag);
         }
+        public override void ClearWorld()
+        {
+            base.ClearWorld();
+        }
     }
     public class NaturalTile : GlobalTile
     {
-        static List<uint> PlacedTiles;
+        static HashSet<uint> PlacedTiles = new();
         public override void PlaceInWorld(int i, int j, int type, Item item)
         {
             if (ValidOreTile(i, j, type))
             {
                 uint p = Combine((uint)i, (uint)j);
-                if (!PlacedTiles.Contains(p)) PlacedTiles.Add(p);
+                if (!PlacedTiles.Contains(p))
+                {
+                    PlacedTiles.Add(p);
+                }
             }
         }
         public static bool IsNatural(int i, int j)
@@ -39,11 +47,11 @@ namespace OreProcessing.Content.Fortune
         public static uint Combine(uint i, uint j) => (i << 16) | j;
         public static void SaveWorldData(TagCompound tag)
         {
-            tag[nameof(PlacedTiles)] = PlacedTiles;
+            tag[nameof(PlacedTiles)] = PlacedTiles.ToList();
         }
         public static void LoadWorldData(TagCompound tag)
         {
-            PlacedTiles = tag.ContainsKey(nameof(PlacedTiles)) ? tag.Get<List<uint>>(nameof(PlacedTiles)) : new();
+            PlacedTiles = new(tag.ContainsKey(nameof(PlacedTiles)) ? tag.Get<List<uint>>(nameof(PlacedTiles)) : new());
 
         }
 
@@ -98,6 +106,20 @@ namespace OreProcessing.Content.Fortune
                 default:
                     base.UpdateArmorSet(player, set);
                     break;
+            }
+        }
+        static readonly string[] FargoMinerEffectItems = { "MinerEnchant", "WorldShaperSoul", "DimensionSoul", "EternitySoul" };
+        public override void UpdateAccessory(Item item, Player player, bool hideVisual)
+        {
+            if (ModLoader.TryGetMod("FargowiltasSouls", out Mod FargowiltasSouls))
+            {
+                int FargoItemType(string name)
+                {
+                    FargowiltasSouls.TryFind(name, out ModItem fargoItem);
+                    return fargoItem.Type;
+                }
+                if (FargoMinerEffectItems.Any(name => FargoItemType(name) == item.type))
+                    player.GetModPlayer<FortunePlayer>().hasMiningFortune = true;
             }
         }
     }
